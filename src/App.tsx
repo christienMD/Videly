@@ -7,13 +7,16 @@ export const tableHeaders = ["Title", "Genre", "Stock", "Rate", " "] as const;
 
 function App() {
   const Allmovies = getMovies();
-
   const [movies, setMovies] = useState<Movie[]>(Allmovies);
 
   const handleDelete = (movie: Movie) => {
     const filteredMovies = movies.filter((mo) => mo._id !== movie._id);
     setMovies(filteredMovies);
   };
+
+  // const handleLike = (movie: Movie) => {
+  //    const movies = [...movies];
+  // };
 
   return (
     <div>
@@ -22,7 +25,12 @@ function App() {
       <Movies
         moviesCount={movies.length}
         movies={movies}
-        onDelete={handleDelete}
+        onDeleteMovie={handleDelete}
+        onClickLike={(movie) => {
+          const index = movies.indexOf(movie);
+          const likedMovie = movies[index];
+          console.log(likedMovie);
+        }}
       />
     </div>
   );
