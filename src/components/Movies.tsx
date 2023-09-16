@@ -15,12 +15,8 @@ interface Movies {
   onClickLike: (movie: Movie) => void;
 }
 
-const Movies = ({
-  movies,
-  onDeleteMovie,
-  onClickLike,
-}: Movies) => {
-  const allGenres = getGenres();
+const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
+  const allGenres = [{ name: "All Genres", id: "" }, ...getGenres()];
   const [selectedGenre, setSelectedGenre] = useState<Genre>();
   const [genres, setGenres] = useState<Genre[]>(allGenres);
   const pageSize = 4;
@@ -29,9 +25,10 @@ const Movies = ({
     setCurrentPage(page);
   };
 
-  const filteredMovies = selectedGenre
-    ? movies.filter((m) => m.genre._id === selectedGenre._id)
-    : movies;
+  const filteredMovies =
+    selectedGenre && selectedGenre._id
+      ? movies.filter((m) => m.genre._id === selectedGenre._id)
+      : movies;
   const paginatedMovies = paginate(filteredMovies, currentPage, pageSize);
 
   return (
@@ -39,7 +36,10 @@ const Movies = ({
       <div className="col-md-3">
         <ListGroup
           genres={genres}
-          onSelectGenre={(genre) => setSelectedGenre(genre)}
+          onSelectGenre={(genre) => {
+            setSelectedGenre(genre);
+            setCurrentPage(1);
+          }}
         />
       </div>
       <div className="col">
