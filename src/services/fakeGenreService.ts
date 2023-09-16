@@ -1,3 +1,7 @@
+export interface Genre {
+  _id: string;
+  name: string;
+}
 
 export const genres = [
   { _id: "5b21ca3eeb7f6fbccd471818", name: "Action" },

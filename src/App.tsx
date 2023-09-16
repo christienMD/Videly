@@ -23,7 +23,6 @@ function App() {
       <ColorModeSwitch />
 
       <Movies
-        moviesCount={movies.length}
         movies={movies}
         onDeleteMovie={handleDelete}
         onClickLike={(movie) => {
