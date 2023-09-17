@@ -3,7 +3,6 @@ import ColorModeSwitch from "./components/ColorModeSwitch";
 import Movies from "./components/Movies";
 import { getMovies } from "./services/fakeMovieService";
 import { Movie } from "./services/fakeMovieService";
-export const tableHeaders = ["Title", "Genre", "Stock", "Rate", " "] as const;
 
 function App() {
   const Allmovies = getMovies();

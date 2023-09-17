@@ -1,13 +1,14 @@
-import { Table, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { HStack, Table, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { Movie } from "../services/fakeMovieService";
 import { Genre } from "../services/fakeGenreService";
 import { getGenres } from "../services/fakeGenreService";
-import { tableHeaders } from "../App";
 import Like from "./common/Like";
 import Pagination from "./common/Pagination";
 import { paginate } from "../utils/paginate";
 import { useState } from "react";
 import ListGroup from "./common/ListGroup";
+import _ from "lodash";
+import { FaSortUp, FaSortDown } from "react-icons/fa";
 
 interface Movies {
   movies: Movie[];
@@ -15,21 +16,43 @@ interface Movies {
   onClickLike: (movie: Movie) => void;
 }
 
+interface SortColumn {
+  path: string;
+  order: string;
+}
+
 const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
-  const allGenres = [{ name: "All Genres", id: "" }, ...getGenres()];
+  const allGenres = [{ name: "All Genres", _id: "" }, ...getGenres()];
   const [selectedGenre, setSelectedGenre] = useState<Genre>();
   const [genres, setGenres] = useState<Genre[]>(allGenres);
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortColumn, setSortColumn] = useState<SortColumn>({
+    path: "title",
+    order: "asc" || "desc",
+  });
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+  const handleSortOnClick = (path: string) => {
+    setSortColumn({ path, order: "asc" });
   };
 
   const filteredMovies =
     selectedGenre && selectedGenre._id
       ? movies.filter((m) => m.genre._id === selectedGenre._id)
       : movies;
-  const paginatedMovies = paginate(filteredMovies, currentPage, pageSize);
+  const sorted = _.orderBy(
+    filteredMovies,
+    [sortColumn.path],
+    ["asc" || "desc"]
+  );
+  const paginatedMovies = paginate(sorted, currentPage, pageSize);
+
+  const renderSortIcon = (column: string) => {
+    if (column !== sortColumn.path) return null;
+    if (sortColumn.order === "asc") return <FaSortUp />;
+  };
 
   return (
     <div className="row">
@@ -51,11 +74,48 @@ const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
         <Table>
           <Thead>
             <Tr>
-              {tableHeaders.map((tableHeader) => (
-                <Th key={tableHeader} fontWeight="extrabold">
-                  {tableHeader}
-                </Th>
-              ))}
+              <Th
+                className="clickable"
+                onClick={() => handleSortOnClick("title")}
+                fontWeight="extrabold"
+              >
+                <HStack>
+                  <Text>Title</Text>
+                  {renderSortIcon("title")}
+                </HStack>
+              </Th>
+              <Th
+                className="clickable"
+                onClick={() => handleSortOnClick("genre.name")}
+                fontWeight="extrabold"
+              >
+                <HStack>
+                  <Text>Genre</Text>
+                  {renderSortIcon("genre.name")}
+                </HStack>
+              </Th>
+              <Th
+                className="clickable"
+                onClick={() => handleSortOnClick("numberInStock")}
+                fontWeight="extrabold"
+              >
+                <HStack>
+                  <Text>Stock</Text>
+                  {renderSortIcon("numberInStock")}
+                </HStack>
+              </Th>
+              <Th
+                className="clickable"
+                onClick={() => handleSortOnClick("dailyRentalRate")}
+                fontWeight="extrabold"
+              >
+                <HStack>
+                  <Text>Rate</Text>
+                  {renderSortIcon("dailyRentalRate")}
+                </HStack>
+              </Th>
+              <Th />
+              <Th />
             </Tr>
           </Thead>
           <tbody>
