@@ -8,7 +8,8 @@ import { paginate } from "../utils/paginate";
 import { useState } from "react";
 import ListGroup from "./common/ListGroup";
 import _ from "lodash";
-import { FaSortUp, FaSortDown } from "react-icons/fa";
+import { FaSortUp } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface Movies {
   movies: Movie[];
@@ -121,7 +122,14 @@ const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
           <tbody>
             {paginatedMovies.map((movie) => (
               <Tr fontWeight="semibold" key={movie._id}>
-                <Td>{movie.title}</Td>
+                <Td>
+                  <Link
+                    className="text-primary"
+                    to={`/movies/${movie._id}`}
+                  >
+                    {movie.title}
+                  </Link>
+                </Td>
                 <Td>{movie.genre.name}</Td>
                 <Td>{movie.numberInStock}</Td>
                 <Td>{movie.dailyRentalRate}</Td>
