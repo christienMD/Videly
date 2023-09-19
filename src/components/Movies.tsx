@@ -10,6 +10,7 @@ import ListGroup from "./common/ListGroup";
 import _ from "lodash";
 import { FaSortUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import SearchBox from "./SearchBox";
 
 interface Movies {
   movies: Movie[];
@@ -24,7 +25,7 @@ interface SortColumn {
 
 const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
   const allGenres = [{ name: "All Genres", _id: "" }, ...getGenres()];
-  const [selectedGenre, setSelectedGenre] = useState<Genre>();
+  const [selectedGenre, setSelectedGenre] = useState<Genre | null>();
   const [genres, setGenres] = useState<Genre[]>(allGenres);
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,6 +33,7 @@ const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
     path: "title",
     order: "asc" || "desc",
   });
+  const [searchQuery, setSearchQuery] = useState("");
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -39,10 +41,20 @@ const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
     setSortColumn({ path, order: "asc" });
   };
 
-  const filteredMovies =
-    selectedGenre && selectedGenre._id
-      ? movies.filter((m) => m.genre._id === selectedGenre._id)
-      : movies;
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setSelectedGenre(null);
+    setCurrentPage(1);
+  };
+
+  let filteredMovies = movies;
+  if (searchQuery) {
+    filteredMovies = movies.filter((m) =>
+      m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+    );
+  } else if (selectedGenre && selectedGenre._id) {
+    filteredMovies = movies.filter((m) => m.genre._id === selectedGenre._id);
+  }
   const sorted = _.orderBy(
     filteredMovies,
     [sortColumn.path],
@@ -67,11 +79,22 @@ const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
         />
       </div>
       <div className="col">
+        <Link
+          to="/movies/new"
+          className="btn btn-primary"
+          style={{ marginBottom: 20, marginTop: 10 }}
+        >
+          New Movie
+        </Link>
         {filteredMovies.length > 0 ? (
           <Text>Showing {filteredMovies.length} movies in the database.</Text>
         ) : (
           <Text>There are no movies in the database</Text>
         )}
+        <SearchBox
+          value={searchQuery}
+          onChange={(value) => handleSearch(value)}
+        />
         <Table>
           <Thead>
             <Tr>
@@ -123,10 +146,7 @@ const Movies = ({ movies, onDeleteMovie, onClickLike }: Movies) => {
             {paginatedMovies.map((movie) => (
               <Tr fontWeight="semibold" key={movie._id}>
                 <Td>
-                  <Link
-                    className="text-primary"
-                    to={`/movies/${movie._id}`}
-                  >
+                  <Link className="text-primary" to={`/movies/${movie._id}`}>
                     {movie.title}
                   </Link>
                 </Td>
