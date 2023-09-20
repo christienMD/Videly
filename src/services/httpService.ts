@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import logger from "./logService";
 import { toast } from "react-toastify";
+
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
@@ -20,10 +21,9 @@ axios.interceptors.response.use(
   }
 );
 
-
 export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
-  delete: axios.delete
+  delete: axios.delete,
 };

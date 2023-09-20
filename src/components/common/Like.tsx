@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
-interface Props {
-  onClick: () => void;
-}
+// interface Props {
+//   onClick: () => void;
+// }
 
-const Like = ({ onClick }: Props) => {
+const Like = () => {
   const [status, setStatus] = useState(false);
 
   const toggle = () => {
     setStatus(!status);
-    onClick();
   };
 
   if (status)

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-import { getGenres } from "../services/fakeGenreService";
+import { getGenres } from "../services/genreService";
 // import { Movie, saveMovie } from "../services/fakeMovieService";
 
 const genreNames = ["Action", "Comedy", "Thriller"] as const;
