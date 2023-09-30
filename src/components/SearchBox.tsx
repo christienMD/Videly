@@ -1,3 +1,6 @@
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { BsSearch } from "react-icons/bs";
+
 interface Props {
   onChange: (value: string) => void;
   value: string;
@@ -5,14 +8,18 @@ interface Props {
 
 const SearchBox = ({ onChange, value }: Props) => {
   return (
-    <input
-      type="text"
-      name="query"
-      value={value}
-      className="form-control my-3"
-      placeholder="Search..."
-      onChange={(event) => onChange(event.currentTarget.value)}
-    />
+    <InputGroup>
+      <InputLeftElement children={<BsSearch />} />
+      <Input
+        onChange={(event) => onChange(event.currentTarget.value)}
+        borderRadius={20}
+        placeholder="Search ..."
+        variant="filled"
+        name="query"
+        value={value}
+        marginBottom={3}
+      />
+    </InputGroup>
   );
 };
 

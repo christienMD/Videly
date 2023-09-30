@@ -1,69 +1,71 @@
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
-
-const schema = z.object({
-  username: z.string().email({ message: "username must be a valid email" }),
-  name: z.string().min(5, { message: "Name must be at least 5 characters." }),
-  password: z
-    .string()
-    .min(5, { message: "password must be at least 5 characters long" })
-    .max(25, { message: "password cannot exceede 20 characters" }),
-});
-
-type FormData = z.infer<typeof schema>;
+import { useNavigate } from "react-router-dom";
+import { User, register } from "../services/userService";
+import { FormEvent, useState } from "react";
 
 const Register = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User>({} as User);
 
-  const onSubmitLogin = (data: FieldValues) => console.log(data);
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      const res = await register(user);
+      localStorage.setItem("token", res.headers["x-auth-token"]);
+      navigate("/");
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   return (
     <>
       <h1>Register</h1>
-      <form onSubmit={handleSubmit(onSubmitLogin)}>
+      <form onSubmit={handleSubmit}>
         <div className="form-group mt-3">
           <label htmlFor="email">Username</label>
           <input
-            {...register("username")}
+            onChange={(event) =>
+              setUser({ ...user, username: event.target.value })
+            }
+            value={user.username}
             placeholder="mdchristien@gmail.com"
             id="email"
             type="email"
             className="form-control"
           />
-          {errors.username && (
+          {/* {errors.username && (
             <p className="text-danger">{errors.username.message}</p>
-          )}
+          )} */}
         </div>
         <div className="form-group mt-3">
           <label htmlFor="password">Password</label>
           <input
-            {...register("password")}
+            onChange={(event) =>
+              setUser({ ...user, password: event.target.value })
+            }
+            value={user.password}
             id="password"
             type="password"
             className="form-control"
           />
-          {errors.password && (
+          {/* {errors.password && (
             <p className="text-danger">{errors.password.message}</p>
-          )}
+          )} */}
         </div>
         <div className="form-group mt-3">
           <label htmlFor="username">Name</label>
           <input
-            {...register("name")}
+            onChange={(event) => setUser({ ...user, name: event.target.value })}
             placeholder="Enter your name"
+            value={user.name}
             id="username"
             type="text"
             className="form-control"
           />
-          {errors.name && <p className="text-danger">{errors.name.message}</p>}
+          {/* {errors.name && <p className="text-danger">{errors.name.message}</p>} */}
         </div>
-        <button type="submit" disabled={!isValid} className="mt-3 btn btn-primary">
-          Login
+        <button type="submit" className="mt-3 btn btn-primary">
+          Register
         </button>
       </form>
     </>

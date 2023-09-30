@@ -1,53 +1,62 @@
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
+// import { useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
+import { FormEvent, useState } from "react";
 
-const schema = z.object({
-  name: z.string().min(5, { message: "Name must be at least 5 characters." }),
-  password: z
-    .string()
-    .min(5, { message: "password must be at least 5 characters long" })
-    .max(25, { message: "password cannot exceede 20 characters" }),
-});
-
-type FormData = z.infer<typeof schema>;
+interface UserLogin {
+  username: string;
+  password: string;
+}
 
 const LoginForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  const [user, setUser] = useState<UserLogin>({} as UserLogin);
+  
 
-  const onSubmitLogin = (data: FieldValues) => console.log(data);
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      const { data: jwt } = await login(user.username, user.password);
+      localStorage.setItem("token", jwt);
+      (window.location as unknown as string) = "/";
+    
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   return (
     <>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit(onSubmitLogin)}>
+      <form onSubmit={handleSubmit}>
         <div className="form-group mt-3">
           <label htmlFor="username">Name</label>
           <input
-            {...register("name")}
+            onChange={(event) =>
+              setUser({ ...user, username: event.target.value })
+            }
+            value={user.username}
             id="username"
-            type="text"
+            type="email"
+            placeholder="enter your email"
             className="form-control"
           />
-          {errors.name && <p className="text-danger">{errors.name.message}</p>}
+          {/* {errors.name && <p className="text-danger">{errors.name.message}</p>} */}
         </div>
         <div className="form-group mt-3">
           <label htmlFor="password">Password</label>
           <input
-            {...register("password")}
+            onChange={(event) =>
+              setUser({ ...user, password: event.target.value })
+            }
+            value={user.password}
             id="password"
             type="password"
             className="form-control"
           />
-          {errors.password && (
+          {/* {errors.password && (
             <p className="text-danger">{errors.password.message}</p>
-          )}
+          )} */}
         </div>
-        <button type="submit" disabled={!isValid} className="mt-3 btn btn-primary">
+        <button type="submit" className="mt-3 btn btn-primary">
           Login
         </button>
       </form>

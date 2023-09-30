@@ -1,12 +1,9 @@
 import { HStack, Table, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
-import { Movie } from "../services/fakeMovieService";
-import { deleteMovie, getMovies } from "../services/movieServies";
-import { Genre } from "../services/fakeGenreService";
-import { getGenres } from "../services/genreService";
+import { FetchMovieResponse, deleteMovie } from "../services/movieServies";
 import Like from "./common/Like";
 import Pagination from "./common/Pagination";
 import { paginate } from "../utils/paginate";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ListGroup from "./common/ListGroup";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -14,11 +11,12 @@ import { FaSortUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SearchBox from "./SearchBox";
 import { AxiosError } from "axios";
+import useGenres, { Genre } from "../hooks/useGenres";
+import useMovies from "../hooks/useMovies";
 
 interface Movies {
-  moviesAll: Movie[];
-  onDeleteMovie: (movie: Movie) => void;
-  onClickLike: (movie: Movie) => void;
+  onDeleteMovie: (movie: FetchMovieResponse) => void;
+  onClickLike: (movie: FetchMovieResponse) => void;
 }
 
 interface SortColumn {
@@ -27,8 +25,8 @@ interface SortColumn {
 }
 
 const Movies = () => {
-  const [genres, setGenres] = useState<Genre[]>([]);
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const { genres } = useGenres();
+  const { movies, setMovies } = useMovies();
   const [selectedGenre, setSelectedGenre] = useState<Genre | null>();
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,50 +35,6 @@ const Movies = () => {
     order: "asc" || "desc",
   });
   const [searchQuery, setSearchQuery] = useState("");
-
-  const fetchGenres = async () => {
-    try {
-      const { data } = await getGenres();
-      return data;
-    } catch (error) {
-      console.error("Error fetching genres:", error);
-      return [];
-    }
-  };
-  const fetchMovies = async () => {
-    try {
-      const { data } = await getMovies();
-      // console.log(data)
-      return data;
-    } catch (error) {
-      console.error("Error fetching genres:", error);
-      return [];
-    }
-  };
-  //  fetchMovies()
-  const fetchData = async () => {
-    try {
-      const genres = await fetchGenres();
-      const allGenres = [{ name: "All Genres", _id: "" }, ...genres];
-      setGenres(allGenres);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  const fetchMovieData = async () => {
-    try {
-      const allMovies = await fetchMovies();
-      setMovies(allMovies);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-    fetchMovieData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -95,7 +49,7 @@ const Movies = () => {
     setCurrentPage(1);
   };
 
-  const handleDelete = async (movie: Movie) => {
+  const handleDelete = async (movie: FetchMovieResponse) => {
     const originalMovies = [...movies];
     const filterdDeletedmovie = originalMovies.filter(
       (mo) => mo._id !== movie._id
@@ -106,7 +60,7 @@ const Movies = () => {
     } catch (ex) {
       if ((ex as AxiosError)?.response?.status === 400) {
         toast.error("This movie has already been deleted");
-        console.log(ex)
+        console.log(ex);
       }
       setMovies(originalMovies);
     }
@@ -145,7 +99,7 @@ const Movies = () => {
       </div>
       <div className="col">
         <Link
-          to="/movies/new"
+          to="movies/new"
           className="btn btn-primary"
           style={{ marginBottom: 20, marginTop: 10 }}
         >
