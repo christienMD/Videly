@@ -17,12 +17,12 @@ import sortMovies, { SortColumn } from "../utils/sortedMovies";
 import useGetCurrentUser from "../hooks/useGetCurrentUser";
 // import useMovies from "../hooks/useMovies";
 import useData from "../hooks/useData";
+import MovieHeading from "./MovieHeading";
 
 interface Movies {
   onDeleteMovie: (movie: FetchMovieResponse) => void;
   onClickLike: (movie: FetchMovieResponse) => void;
 }
-
 
 const Movies = () => {
   const { currentUser } = useGetCurrentUser();
@@ -95,11 +95,9 @@ const Movies = () => {
             New Movie
           </Link>
         )}
-        {filteredMovies.length > 0 ? (
-          <Text>Showing {filteredMovies.length} movies in the database.</Text>
-        ) : (
-          <Text>There are no movies in the database</Text>
-        )}
+
+        <MovieHeading filteredMovies={filteredMovies} />
+
         <SearchBox
           value={searchQuery}
           onChange={(value) => handleSearch(value)}
