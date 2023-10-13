@@ -1,9 +1,11 @@
 import _ from "lodash";
-import { Movie } from "../services/fakeMovieService";
+import { FetchMovieResponse } from "../services/movie-service";
 
-
-export const paginate = (items: Movie[] , pageNumber: number, pageSize : number) => {
+export const paginate = (
+  items: FetchMovieResponse[],
+  pageNumber: number,
+  pageSize: number
+) => {
   const startIndex = (pageNumber - 1) * pageSize;
- return _(items).slice(startIndex).take(pageSize).value();
+  return _(items).slice(startIndex).take(pageSize).value();
 };
-

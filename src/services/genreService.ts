@@ -1,8 +1,6 @@
-import http from "./httpService";
-import { apiUrl } from "../config.json";
 import { Genre } from "./genre-service";
-
+import apiClient from "./api-client";
 
 export function getGenres() {
-  return http.get<Genre[]>(apiUrl + "/genres");
+  return apiClient.get<Genre[]>("/genres");
 }

@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FormEvent, useState } from "react";
-import { Movie } from "../services/movieServies";
+import { Movie } from "../services/movie-service";
 import useGenres from "../hooks/useGenres";
 import useMovie from "../hooks/useMovie";
 import updateMovies from "../hooks/useUpdateMovie";
 import saveMovies from "../hooks/saveMovie";
+import { Box, Button, Input, Select } from "@chakra-ui/react";
 
 const MovieForm = () => {
   const navigate = useNavigate();
@@ -12,22 +13,28 @@ const MovieForm = () => {
   const movieId = `${params.id}`;
   const { genres } = useGenres();
   const { movie, setMovie } = useMovie(movieId);
+
   const [userCreatedMovie, setUserCreatedMovie] = useState<Movie>({} as Movie);
 
   const handleSubmitt = async (event: FormEvent) => {
     event.preventDefault();
-    if (movieId === "new" && userCreatedMovie) saveMovies(userCreatedMovie);
-    if (movie && movieId !== "new") updateMovies(movie);
-    navigate("/");
+    if (movieId === "new" && userCreatedMovie) {
+      await saveMovies(userCreatedMovie);
+      navigate("/");
+    }
+    if (movie && movieId !== "new") {
+      await updateMovies(movie);
+      navigate("/");
+    }
   };
 
   return (
-    <>
+    <Box padding={5}>
       <h1>Movie Form</h1>
       <form onSubmit={handleSubmitt}>
         <div className="form-group mt-3">
           <label htmlFor="title">Title</label>
-          <input
+          <Input
             onChange={(event) => {
               if (movie) setMovie({ ...movie, title: event.target.value });
               setUserCreatedMovie({
@@ -35,10 +42,9 @@ const MovieForm = () => {
                 title: event.target.value,
               });
             }}
-            value={movie?.title}
+            value={movie.title}
             id="title"
             type="text"
-            className="form-control"
           />
           {/* {errors.title && (
             <p className="text-danger">{errors.title.message}</p>
@@ -47,7 +53,9 @@ const MovieForm = () => {
 
         <div className="form-group mt-3">
           <label htmlFor="genre">Genre</label>
-          <select
+          <Select
+            placeholder="Select Genre"
+            variant="filled"
             onChange={(event) => {
               if (movie) setMovie({ ...movie, _id: event.target.value });
 
@@ -56,25 +64,20 @@ const MovieForm = () => {
                 genreId: event.target.value,
               });
             }}
-            value={movie?.genre.name}
+            // value={movie.genre?._id}
             id="genre"
-            className="form-select"
           >
-            <option value="" />
             {genres.map((genre) => (
               <option key={genre._id} value={genre._id}>
                 {genre.name}
               </option>
             ))}
-          </select>
-          {/* {errors.genre && (
-            <div className="alert alert-danger">{errors.genre.message}</div>
-          )} */}
+          </Select>
         </div>
 
         <div className="form-group mt-3">
           <label htmlFor="numberInStock">Number in Stock</label>
-          <input
+          <Input
             // ref={numberInStockRef}
             onChange={(event) => {
               if (movie)
@@ -87,10 +90,9 @@ const MovieForm = () => {
                 numberInStock: parseInt(event.target.value),
               });
             }}
-            value={movie?.numberInStock}
+            value={movie.numberInStock}
             id="numberInStock"
             type="number"
-            className="form-control"
           />
           {/* {errors.numberInStock && (
             <p className="text-danger">{errors.numberInStock.message}</p>
@@ -98,7 +100,7 @@ const MovieForm = () => {
         </div>
         <div className="form-group mt-3">
           <label htmlFor="rate">Rate</label>
-          <input
+          <Input
             // ref={dailyRentalRateRef}
             onChange={(event) => {
               if (movie)
@@ -111,20 +113,19 @@ const MovieForm = () => {
                 dailyRentalRate: parseFloat(event.target.value),
               });
             }}
-            value={movie?.dailyRentalRate}
+            value={movie.dailyRentalRate}
             id="rate"
             type="text"
-            className="form-control"
           />
           {/* {errors.dailyRentalRate && (
             <p className="text-danger">{errors.dailyRentalRate.message}</p>
           )} */}
         </div>
-        <button type="submit" className="mt-3 btn btn-primary">
+        <Button type="submit" colorScheme="messenger" marginTop={5}>
           submit
-        </button>
+        </Button>
       </form>
-    </>
+    </Box>
   );
 };
 

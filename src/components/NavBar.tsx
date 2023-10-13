@@ -8,10 +8,9 @@ interface CurrentUser {
 
 interface Props {
   user: CurrentUser | null;
-  onLogout: () => void;
 }
 
-const NavBar = ({ user  , onLogout}: Props) => {
+const NavBar = ({ user }: Props) => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -52,12 +51,12 @@ const NavBar = ({ user  , onLogout}: Props) => {
             )}
             {user && (
               <>
-                {console.log(user)}
+                {/* {console.log(user)} */}
 
                 <NavLink className="nav-link" to="/profile">
                   {user.name}
                 </NavLink>
-                <NavLink onClick={onLogout} className="nav-link" to="/logout">
+                <NavLink className="nav-link" to="/logout">
                   Logout
                 </NavLink>
               </>

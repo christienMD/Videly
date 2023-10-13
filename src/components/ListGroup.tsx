@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Genre } from "../../hooks/useGenres";
-
+import { Genre } from "../services/genre-service";
 
 export interface Genres {
   genres: Genre[];

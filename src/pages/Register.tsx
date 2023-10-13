@@ -1,74 +1,85 @@
 import { useNavigate } from "react-router-dom";
-import { User, register } from "../services/userService";
-import { FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import registerUser from "../utils/registerUsers";
+import { User } from "../services/userService";
+import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
+import { z } from "zod";
+import { Box, Button, Input } from "@chakra-ui/react";
+
+const schema = z.object({
+  username: z
+    .string()
+    .min(3, { message: "Email is required" })
+    .max(255)
+    .email(),
+  password: z
+    .string()
+    .min(5, { message: "Password must be at least 5 characters." })
+    .max(255),
+  name: z
+    .string()
+    .min(5, { message: "Name must be at least 5 characters." })
+    .max(255),
+});
 
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<User>({ resolver: zodResolver(schema) });
   const navigate = useNavigate();
-  const [user, setUser] = useState<User>({} as User);
 
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    try {
-      const res = await register(user);
-      localStorage.setItem("token", res.headers["x-auth-token"]);
-      navigate("/");
-    } catch (ex) {
-      console.log(ex);
-    }
+  const onSubmit = (data: User) => {
+    registerUser(data);
+    navigate("/");
   };
 
   return (
-    <>
+    <Box padding={5}>
       <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-3">
           <label htmlFor="email">Username</label>
-          <input
-            onChange={(event) =>
-              setUser({ ...user, username: event.target.value })
-            }
-            value={user.username}
+          <Input
+            variant="filled"
+            {...register("username")}
             placeholder="mdchristien@gmail.com"
             id="email"
             type="email"
-            className="form-control"
           />
-          {/* {errors.username && (
+          {errors.username && (
             <p className="text-danger">{errors.username.message}</p>
-          )} */}
+          )}
         </div>
         <div className="form-group mt-3">
           <label htmlFor="password">Password</label>
-          <input
-            onChange={(event) =>
-              setUser({ ...user, password: event.target.value })
-            }
-            value={user.password}
+          <Input
+            variant="filled"
+            {...register("password")}
             id="password"
             type="password"
-            className="form-control"
           />
-          {/* {errors.password && (
+          {errors.password && (
             <p className="text-danger">{errors.password.message}</p>
-          )} */}
+          )}
         </div>
         <div className="form-group mt-3">
           <label htmlFor="username">Name</label>
-          <input
-            onChange={(event) => setUser({ ...user, name: event.target.value })}
+          <Input
+            variant="filled"
+            {...register("name")}
             placeholder="Enter your name"
-            value={user.name}
             id="username"
             type="text"
-            className="form-control"
           />
-          {/* {errors.name && <p className="text-danger">{errors.name.message}</p>} */}
+          {errors.name && <p className="text-danger">{errors.name.message}</p>}
         </div>
-        <button type="submit" className="mt-3 btn btn-primary">
+        <Button type="submit" colorScheme="messenger" mt={5}>
           Register
-        </button>
+        </Button>
       </form>
-    </>
+    </Box>
   );
 };
 

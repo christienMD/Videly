@@ -27,7 +27,7 @@ class HttpService {
   }
 
   delete(id: string) {
-    return apiClient.delete(this.endpoint+ '/' + id);
+    return apiClient.delete(this.endpoint + "/" + id);
   }
 
   save<T>(entity: T) {
@@ -44,11 +44,11 @@ class HttpService {
         dailyRentalRate: body.dailyRentalRate,
       };
 
-      return apiClient.put(this.endpoint+"/" + entity._id, updatedMovie);
+      return apiClient.put(this.endpoint + "/" + entity._id, updatedMovie);
     }
   }
 }
 
-const create = (endpoint: string) => new HttpService(endpoint)
+const create = (endpoint: string) => new HttpService(endpoint);
 
-export default create
+export default create;

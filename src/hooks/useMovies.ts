@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FetchMovieResponse } from "../services/movieServies";
+import { FetchMovieResponse } from "../services/movie-service";
 import movieService from "../services/movie-service";
 import axios from "axios";
 
@@ -9,11 +9,10 @@ const useMovies = () => {
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
-    const { request, cancle } = movieService.getAllMovies();
+    const { request, cancle } = movieService.getAll<FetchMovieResponse>();
 
     request
       .then((res) => {
-        console.log(res.data);
         setMovies(res.data);
         setLoading(false);
       })

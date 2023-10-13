@@ -1,19 +1,9 @@
-import http from "./httpService";
-import { apiUrl } from "../config.json";
-
-const apiEndPoint = apiUrl + "/auth";
-
-http.setJwt(getJwt())
+import apiClient from "./api-client";
 
 export function login(email: string, password: string) {
-  return http.post(apiEndPoint, { email, password });
-}
-
-export function getJwt() {
-  return localStorage.getItem("token");
+  return apiClient.post("/auth", { email, password });
 }
 
 export default {
   login,
-  getJwt,
 };

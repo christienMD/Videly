@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
-import genreService, { Genre } from "../services/genre-service";
+// import { FetchMovieResponse } from "../services/movie-service";
+import movieService from "../services/movie-service";
 import axios from "axios";
 
-const useGenres = () => {
-  const [genres, setGenres] = useState<Genre[]>([] as Genre[]);
+const useData = <T>() => {
+  const [data, setData] = useState<T[]>([] || {} as T[]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const allGenres = [{ _id: "", name: "All Genres" }, ...genres];
-
   useEffect(() => {
     setLoading(true);
-    const { request, cancle } = genreService.getAllGenres();
+    const { request, cancle } = movieService.getAll<T>();
+
     request
       .then((res) => {
-        // console.log(res.data)
-        setGenres(res.data);
+        setData(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -28,7 +27,7 @@ const useGenres = () => {
     return () => cancle();
   }, []);
 
-  return { genres, allGenres, error, isLoading };
+  return { data, setData, error, isLoading };
 };
 
-export default useGenres;
+export default useData;

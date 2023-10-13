@@ -1,5 +1,4 @@
-import http from "./httpService";
-import { apiUrl } from "../config.json";
+import apiClient from "./api-client";
 
 export interface User {
   username: string;
@@ -7,12 +6,10 @@ export interface User {
   name: string;
 }
 
-const apiEndPoint = apiUrl + "/users";
-
-export const register = (user: User) =>{
- return http.post(apiEndPoint, {
+export const register = (user: User) => {
+  return apiClient.post("/users", {
     email: user.username,
     password: user.password,
     name: user.name,
   });
-}
+};

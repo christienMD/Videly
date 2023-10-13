@@ -1,64 +1,73 @@
-// import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService";
-import { FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import loginUser, { UserLogin } from "../utils/loginUser";
+import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
+import { z } from "zod";
+import { useState } from "react";
+import { Button, Input } from "@chakra-ui/react";
 
-interface UserLogin {
-  username: string;
-  password: string;
-}
+const schema = z.object({
+  username: z
+    .string()
+    .min(3, { message: "Email is required." })
+    .max(255)
+    .email({ message: "Invalid Email" }),
+  password: z.string().min(5, { message: "Password is required." }).max(255),
+});
 
 const LoginForm = () => {
-  const [user, setUser] = useState<UserLogin>({} as UserLogin);
-  
+  const [errorMessage, setErrorMessage] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserLogin>({
+    resolver: zodResolver(schema),
+  });
 
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    try {
-      const { data: jwt } = await login(user.username, user.password);
-      localStorage.setItem("token", jwt);
+  const onSubmit = async (user: UserLogin) => {
+    await loginUser(user).then((res) => {
+      if (res) {
+        setErrorMessage(res.message);
+      } else {
+        setErrorMessage("");
+      }
       (window.location as unknown as string) = "/";
-    
-    } catch (ex) {
-      console.log(ex);
-    }
+    });
   };
 
   return (
     <>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <p className="text-danger">{errorMessage}</p>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-3">
           <label htmlFor="username">Name</label>
-          <input
-            onChange={(event) =>
-              setUser({ ...user, username: event.target.value })
-            }
-            value={user.username}
+          <Input
+            variant="filled"
+            {...register("username")}
             id="username"
             type="email"
             placeholder="enter your email"
-            className="form-control"
           />
-          {/* {errors.name && <p className="text-danger">{errors.name.message}</p>} */}
+          {errors.username && (
+            <p className="text-danger">{errors.username.message}</p>
+          )}
         </div>
         <div className="form-group mt-3">
           <label htmlFor="password">Password</label>
-          <input
-            onChange={(event) =>
-              setUser({ ...user, password: event.target.value })
-            }
-            value={user.password}
+          <Input
+            variant="filled"
+            {...register("password")}
             id="password"
             type="password"
-            className="form-control"
           />
-          {/* {errors.password && (
+          {errors.password && (
             <p className="text-danger">{errors.password.message}</p>
-          )} */}
+          )}
         </div>
-        <button type="submit" className="mt-3 btn btn-primary">
+        <Button type="submit" colorScheme="messenger" marginTop={5}>
           Login
-        </button>
+        </Button>
       </form>
     </>
   );
