@@ -5,7 +5,7 @@ import useGenres from "../hooks/useGenres";
 import useMovie from "../hooks/useMovie";
 import updateMovies from "../hooks/useUpdateMovie";
 import saveMovies from "../hooks/saveMovie";
-import { Box, Button, Input, Select } from "@chakra-ui/react";
+import { Box, Button, Heading, Input, Select } from "@chakra-ui/react";
 
 const MovieForm = () => {
   const navigate = useNavigate();
@@ -30,7 +30,9 @@ const MovieForm = () => {
 
   return (
     <Box padding={5}>
-      <h1>Movie Form</h1>
+      <Heading as="h1" fontSize="5xl">
+        Movie Form
+      </Heading>
       <form onSubmit={handleSubmitt}>
         <div className="form-group mt-3">
           <label htmlFor="title">Title</label>
@@ -45,6 +47,7 @@ const MovieForm = () => {
             value={movie.title}
             id="title"
             type="text"
+            required
           />
           {/* {errors.title && (
             <p className="text-danger">{errors.title.message}</p>
@@ -54,6 +57,7 @@ const MovieForm = () => {
         <div className="form-group mt-3">
           <label htmlFor="genre">Genre</label>
           <Select
+            required
             placeholder="Select Genre"
             variant="filled"
             onChange={(event) => {
@@ -93,6 +97,7 @@ const MovieForm = () => {
             value={movie.numberInStock}
             id="numberInStock"
             type="number"
+            required
           />
           {/* {errors.numberInStock && (
             <p className="text-danger">{errors.numberInStock.message}</p>
@@ -100,6 +105,7 @@ const MovieForm = () => {
         </div>
         <div className="form-group mt-3">
           <label htmlFor="rate">Rate</label>
+          
           <Input
             // ref={dailyRentalRateRef}
             onChange={(event) => {
@@ -115,7 +121,8 @@ const MovieForm = () => {
             }}
             value={movie.dailyRentalRate}
             id="rate"
-            type="text"
+            type="number"
+          
           />
           {/* {errors.dailyRentalRate && (
             <p className="text-danger">{errors.dailyRentalRate.message}</p>

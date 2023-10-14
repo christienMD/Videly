@@ -1,4 +1,6 @@
+import { Flex } from "@chakra-ui/react";
 import { Link, NavLink } from "react-router-dom";
+import UserProfile from "./UserProfile";
 interface CurrentUser {
   email: string;
   iat: number;
@@ -12,7 +14,7 @@ interface Props {
 
 const NavBar = ({ user }: Props) => {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary align-center">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Vidly
@@ -29,7 +31,7 @@ const NavBar = ({ user }: Props) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav">
+          <Flex className="navbar-nav align-items-center" width="100%">
             <NavLink className="nav-link active" aria-current="page" to="/">
               Movies
             </NavLink>
@@ -39,6 +41,7 @@ const NavBar = ({ user }: Props) => {
             <NavLink className="nav-link" to="rentals">
               Rentals
             </NavLink>
+
             {!user && (
               <>
                 <NavLink className="nav-link" to="/login">
@@ -49,19 +52,13 @@ const NavBar = ({ user }: Props) => {
                 </NavLink>
               </>
             )}
+
             {user && (
               <>
-                {/* {console.log(user)} */}
-
-                <NavLink className="nav-link" to="/profile">
-                  {user.name}
-                </NavLink>
-                <NavLink className="nav-link" to="/logout">
-                  Logout
-                </NavLink>
+                <UserProfile user={user} />
               </>
             )}
-          </div>
+          </Flex>
         </div>
       </div>
     </nav>
