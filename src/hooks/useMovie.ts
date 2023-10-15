@@ -3,7 +3,9 @@ import { FetchMovieResponse } from "../services/movie-service";
 import movieService from "../services/movie-service";
 
 const useMovie = (movieId: string) => {
-  const [movie, setMovie] = useState<FetchMovieResponse>({} as FetchMovieResponse);
+  const [movie, setMovie] = useState<FetchMovieResponse>(
+    {} as FetchMovieResponse
+  );
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {

@@ -18,6 +18,11 @@ class HttpService {
   constructor(endpoint: string) {
     this.endpoint = endpoint;
   }
+
+  getMovie(movieId: string) {
+    return apiClient.get("/movies/" + movieId);
+  }
+
   getAll<T>() {
     const controller = new AbortController();
     const request = apiClient.get<T[]>("/movies", {

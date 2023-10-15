@@ -8,7 +8,6 @@ import MovieForm from "./pages/MovieForm";
 import LoginForm from "./pages/LoginForm";
 import Register from "./pages/Register";
 import Logout from "./pages/Logout";
-import UserProfile from "./pages/UserProfile";
 import { PrivateRouts } from "./PrivateRoutes";
 
 const router = createBrowserRouter([
@@ -27,10 +26,7 @@ const router = createBrowserRouter([
   },
   {
     element: <PrivateRouts />,
-    children: [
-      { path: "movies/:id", element: <MovieForm /> },
-      { path: "profile", element: <UserProfile /> },
-    ],
+    children: [{ path: "movies/:id", element: <MovieForm /> }],
   },
 ]);
 
