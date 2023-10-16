@@ -48,15 +48,11 @@ const MovieForm = () => {
             type="text"
             required
           />
-          {/* {errors.title && (
-            <p className="text-danger">{errors.title.message}</p>
-          )} */}
         </div>
 
         <div className="form-group mt-3">
           <label htmlFor="genre">Genre</label>
           <Select
-            required
             placeholder="Select Genre"
             variant="filled"
             onChange={(event) => {
@@ -67,7 +63,6 @@ const MovieForm = () => {
                 genreId: event.target.value,
               });
             }}
-            // value={movie.genre?._id}
             id="genre"
           >
             {genres.map((genre) => (
@@ -81,7 +76,6 @@ const MovieForm = () => {
         <div className="form-group mt-3">
           <label htmlFor="numberInStock">Number in Stock</label>
           <Input
-            // ref={numberInStockRef}
             onChange={(event) => {
               if (movie)
                 setMovie({
@@ -98,15 +92,11 @@ const MovieForm = () => {
             type="number"
             required
           />
-          {/* {errors.numberInStock && (
-            <p className="text-danger">{errors.numberInStock.message}</p>
-          )} */}
         </div>
         <div className="form-group mt-3">
           <label htmlFor="rate">Rate</label>
 
           <Input
-            // ref={dailyRentalRateRef}
             onChange={(event) => {
               if (movie)
                 setMovie({
@@ -122,9 +112,6 @@ const MovieForm = () => {
             id="rate"
             type="number"
           />
-          {/* {errors.dailyRentalRate && (
-            <p className="text-danger">{errors.dailyRentalRate.message}</p>
-          )} */}
         </div>
         <Button type="submit" colorScheme="messenger" marginTop={5}>
           submit
