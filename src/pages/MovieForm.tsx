@@ -13,7 +13,6 @@ const MovieForm = () => {
   const movieId = `${params.id}`;
   const { genres } = useGenres();
   const { movie, setMovie } = useMovie(movieId);
-
   const [userCreatedMovie, setUserCreatedMovie] = useState<Movie>({} as Movie);
 
   const handleSubmitt = async (event: FormEvent) => {
@@ -105,7 +104,7 @@ const MovieForm = () => {
         </div>
         <div className="form-group mt-3">
           <label htmlFor="rate">Rate</label>
-          
+
           <Input
             // ref={dailyRentalRateRef}
             onChange={(event) => {
@@ -122,7 +121,6 @@ const MovieForm = () => {
             value={movie.dailyRentalRate}
             id="rate"
             type="number"
-          
           />
           {/* {errors.dailyRentalRate && (
             <p className="text-danger">{errors.dailyRentalRate.message}</p>
