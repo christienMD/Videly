@@ -11,6 +11,6 @@
 
 declare namespace NodeJS {
   export interface ProcessEnv {
-    REACT_APP_API_URL: "https://node-videly-deploy.onrender.com/api";
+    REACT_APP_API_URL: "http://localhost:3900/api";
   }
 }
