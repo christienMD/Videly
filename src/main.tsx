@@ -8,6 +8,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 import router from "./routes.tsx";
 
+// console.log(process.env)
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>

@@ -63,6 +63,7 @@ const MovieForm = () => {
                 genreId: event.target.value,
               });
             }}
+            value={movie.genre?._id}
             id="genre"
           >
             {genres.map((genre) => (
