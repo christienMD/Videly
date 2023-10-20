@@ -24,38 +24,38 @@ export interface Movie {
 }
 
 // class MovieService {
-  // getMovie(movieId: string) {
-  //   return apiClient.get("/movies/" + movieId);
-  // }
-  // getAllMovies() {
-  //   const controller = new AbortController();
-  //   const request = apiClient.get<FetchMovieResponse[]>("/movies", {
-  //     signal: controller.signal,
-  //   } as AxiosRequestConfig);
-  //   return { request, cancle: () => controller.abort() };
-  // }
-
-  // deleteMovie(id: string) {
-  //   return apiClient.delete("/movies/" + id);
-  // }
-
-  // saveMovie(movie: Movie) {
-  //   return apiClient.post("/movies", movie);
-  // }
-
-  // updateMovie(movie: FetchMovieResponse) {
-  //   if (movie._id) {
-  //     const body = { ...movie };
-  //     const updatedMovie = {
-  //       title: body.title,
-  //       genreId: body.genre._id,
-  //       numberInStock: body.numberInStock,
-  //       dailyRentalRate: body.dailyRentalRate,
-  //     };
-
-  //     return apiClient.put("/movies/" + movie._id, updatedMovie);
-  //   }
-  // }
+// getMovie(movieId: string) {
+//   return apiClient.get("/movies/" + movieId);
+// }
+// getAllMovies() {
+//   const controller = new AbortController();
+//   const request = apiClient.get<FetchMovieResponse[]>("/movies", {
+//     signal: controller.signal,
+//   } as AxiosRequestConfig);
+//   return { request, cancle: () => controller.abort() };
 // }
 
-export default create('/movies ');
+// deleteMovie(id: string) {
+//   return apiClient.delete("/movies/" + id);
+// }
+
+// saveMovie(movie: Movie) {
+//   return apiClient.post("/movies", movie);
+// }
+
+// updateMovie(movie: FetchMovieResponse) {
+//   if (movie._id) {
+//     const body = { ...movie };
+//     const updatedMovie = {
+//       title: body.title,
+//       genreId: body.genre._id,
+//       numberInStock: body.numberInStock,
+//       dailyRentalRate: body.dailyRentalRate,
+//     };
+
+//     return apiClient.put("/movies/" + movie._id, updatedMovie);
+//   }
+// }
+// }
+
+export default create("/movies ");
