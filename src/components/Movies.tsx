@@ -186,7 +186,7 @@ const Movies = () => {
             </tbody>
           </Table>
         </Box>
-        <Box pt={3}>
+        <Box mt={5}>
           <Pagination
             currentPage={currentPage}
             itemsCount={filteredMovies.length}
