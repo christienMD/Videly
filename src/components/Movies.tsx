@@ -186,12 +186,14 @@ const Movies = () => {
             </tbody>
           </Table>
         </Box>
-        <Pagination
-          currentPage={currentPage}
-          itemsCount={filteredMovies.length}
-          pageSize={pageSize}
-          onPageChange={(page) => handlePageChange(page)}
-        />
+        <Box pt={3}>
+          <Pagination
+            currentPage={currentPage}
+            itemsCount={filteredMovies.length}
+            pageSize={pageSize}
+            onPageChange={(page) => handlePageChange(page)}
+          />
+        </Box>
       </div>
     </div>
   );
