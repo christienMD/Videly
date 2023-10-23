@@ -9,7 +9,7 @@ const useMovies = () => {
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
-    const { request, cancle } = movieService.getAll<FetchMovieResponse>();
+    const { request, cancle } = movieService.getAllMovies();
 
     request
       .then((res) => {

@@ -76,7 +76,7 @@ const Register = () => {
           {errors.name && <p className="text-danger">{errors.name.message}</p>}
         </div>
         <Button type="submit" colorScheme="messenger" mt={5}>
-          Register
+          Sign Up
         </Button>
       </form>
     </Box>

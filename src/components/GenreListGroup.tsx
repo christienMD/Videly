@@ -1,20 +1,28 @@
 import { useState } from "react";
 import { Genre } from "../services/genre-service";
+import useGenres from "../hooks/useGenres";
 
 export interface Genres {
-  genres: Genre[];
   onSelectGenre: (genre: Genre) => void;
 }
 
-const ListGroup = ({ genres, onSelectGenre }: Genres) => {
-  const [selectedGenre, setSelectedGenre] = useState<Genre>();
+const GenreListGroup = ({ onSelectGenre }: Genres) => {
+  const { allGenres: genres } = useGenres();
+  // console.log("genres: ", genres);
+  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
+
+  const handleGenreClick = (genre: Genre) => {
+    setSelectedGenre(genre);
+    console.log("selected genre: ", genre);
+    onSelectGenre(genre);
+  };
+
   return (
     <ul className="list-group">
       {genres.map((genre) => (
         <li
           onClick={() => {
-            setSelectedGenre(genre);
-            onSelectGenre(genre);
+            handleGenreClick(genre);
           }}
           key={genre._id}
           className={
@@ -30,4 +38,4 @@ const ListGroup = ({ genres, onSelectGenre }: Genres) => {
   );
 };
 
-export default ListGroup;
+export default GenreListGroup;

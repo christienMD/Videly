@@ -4,18 +4,7 @@ import { CurrentUser } from "../pages/Layout";
 
 const useGetCurrentUser = () => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
-  const [loading, setLoading] = useState(true); // Add a loading state
-
-  // useEffect(() => {
-  //   const jwt = localStorage.getItem("token");
-  //   try {
-  //     const user = jwtDecode(jwt);
-  //     setCurrentUser(user);
-  //   } catch (ex) {
-  //     // intentionally empty catch block
-  //   }
-  // }, []);
-  // return { currentUser, setCurrentUser };
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const jwt = localStorage.getItem("token");

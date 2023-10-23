@@ -5,19 +5,20 @@ import Like from "./Like";
 import Pagination from "./Pagination";
 import { paginate } from "../utils/paginate";
 import { useState } from "react";
-import ListGroup from "./ListGroup";
+import GenreListGroup from "./GenreListGroup";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import SearchBox from "./SearchBox";
 import { AxiosError } from "axios";
-import useGenres from "../hooks/useGenres";
+// import useGenres from "../hooks/useGenres";
 import { Genre } from "../services/genre-service";
 import SortIcon from "./SortIcon";
 import sortMovies, { SortColumn } from "../utils/sortedMovies";
 import useGetCurrentUser from "../hooks/useGetCurrentUser";
 // import useMovies from "../hooks/useMovies";
-import useData from "../hooks/useData";
+// import useData from "../hooks/useData";
 import MovieHeading from "./MovieHeading";
+import useMovies from "../hooks/useMovies";
 
 interface Movies {
   onDeleteMovie: (movie: FetchMovieResponse) => void;
@@ -26,10 +27,10 @@ interface Movies {
 
 const Movies = () => {
   const { currentUser } = useGetCurrentUser();
-  const { allGenres: genres } = useGenres();
   // const { movies, setMovies } = useMovies();
-  const { data: movies, setData: setMovies } = useData<FetchMovieResponse>();
-  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
+  // const { data: movies, setData: setMovies } = useData<FetchMovieResponse>();
+  const { movies, setMovies } = useMovies();
+  const [selectedGenre, setSelectedGenre] = useState<Genre | null>({} as Genre);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 4;
   const [sortColumn, setSortColumn] = useState<SortColumn>({
@@ -65,7 +66,7 @@ const Movies = () => {
     );
     setMovies(filterdDeletedmovie);
     try {
-      await movieService.delete(movie._id);
+      await movieService.deleteMovie(movie._id);
     } catch (ex) {
       if ((ex as AxiosError)?.response?.status === 400) {
         toast.error("This movie has already been deleted");
@@ -74,16 +75,21 @@ const Movies = () => {
     }
   };
 
+  // console.log("fil: ", filteredMovies);
+  // if (movies && movies.length > 0) {
+  //   console.log("Sample Movie: ", movies[0]);
+  // }
+
   return (
     <div className="row">
       <div className="col-md-3">
-        <ListGroup
-          genres={genres}
+        <GenreListGroup
           onSelectGenre={(genre) => {
             setSelectedGenre(genre);
             setCurrentPage(1);
           }}
         />
+        {/* <> {console.log("sel: ", selectedGenre)}</> */}
       </div>
       <div className="col">
         {currentUser && (

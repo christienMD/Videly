@@ -13,14 +13,29 @@ const sortMovies = (
   movies: FetchMovieResponse[],
   sortColumn: SortColumn
 ) => {
-  let filteredMovies = movies;
+  let filteredMovies = [...movies];
   if (searchQuery) {
-    filteredMovies = movies.filter((m) =>
+    filteredMovies = filteredMovies.filter((m) =>
       m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
     );
-  } else if (selectedGenre && selectedGenre._id) {
-    filteredMovies = movies.filter((m) => m.genre._id === selectedGenre._id);
   }
+  if (selectedGenre && selectedGenre._id) {
+    // Debugging statements
+    console.log("Selected Genre ID:", selectedGenre._id);
+    console.log("Movies before genre filter:", filteredMovies);
+    filteredMovies = filteredMovies.filter(
+      (m) => m.genre._id === selectedGenre._id
+    );
+    // filteredMovies = filteredMovies.filter((m) => {
+    //   const match = m.genre._id === selectedGenre._id;
+    //   console.log(`Movie Title: ${m.title}, Match: ${match}`);
+    //   return match;
+    // });
+
+    // Debugging statement
+    console.log("Movies after genre filter:", filteredMovies);
+  }
+
   const sorted = _.orderBy(
     filteredMovies,
     [sortColumn.path],
