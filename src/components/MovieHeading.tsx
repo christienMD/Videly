@@ -7,7 +7,11 @@ interface Props {
 
 const MovieHeading = ({ filteredMovies }: Props) => {
   return (
-    <Heading as="h1" marginY={5} fontSize="5xl">
+    <Heading
+      as="h1"
+      marginY={5}
+      fontSize={{ base: "2xl", md: "3xl", lg: "5xl" }}
+    >
       {filteredMovies.length > 0 ? (
         <Text>Showing {filteredMovies.length} movies in the database.</Text>
       ) : (
