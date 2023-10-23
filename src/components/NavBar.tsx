@@ -48,7 +48,7 @@ const NavBar = ({ user }: Props) => {
                   Login
                 </NavLink>
                 <NavLink className="nav-link" to="/register">
-                  Register
+                  Sign Up
                 </NavLink>
               </>
             )}
