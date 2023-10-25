@@ -37,7 +37,7 @@ const NavLinks = ({ children, to }: NavLinkProps) => {
       py={1}
       rounded={"md"}
       _hover={{
-        textDecoration: "none",
+        textDecoration: "underline",
         bg: useColorModeValue("gray.800", "gray.700"),
       }}
       to={to}
