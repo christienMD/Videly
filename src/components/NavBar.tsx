@@ -1,4 +1,3 @@
-
 import {
   Box,
   Flex,
@@ -22,7 +21,7 @@ interface CurrentUser {
 }
 
 interface NavBarProps {
-  user: CurrentUser;
+  user: CurrentUser | null;
 }
 interface NavLinkProps {
   children: React.ReactNode;
