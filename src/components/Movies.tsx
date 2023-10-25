@@ -75,11 +75,7 @@ const Movies = () => {
     }
   };
 
-  // console.log("fil: ", filteredMovies);
-  // if (movies && movies.length > 0) {
-  //   console.log("Sample Movie: ", movies[0]);
-  // }
-
+ 
   return (
     <div className="row">
       <div className="col-md-3">
@@ -89,7 +85,7 @@ const Movies = () => {
             setCurrentPage(1);
           }}
         />
-        {/* <> {console.log("sel: ", selectedGenre)}</> */}
+        
       </div>
       <div className="col">
         {currentUser && (
