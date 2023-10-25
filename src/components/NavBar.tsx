@@ -108,7 +108,7 @@ const NavBar = ({ user }: NavBarProps) => {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              <NavLinks to="/movies">Movies</NavLinks>
+              <NavLinks to="/">Movies</NavLinks>
               <NavLinks to="/customers">Customers</NavLinks>
               <NavLinks to="/Rentals">Rentals</NavLinks>
               {!user && (
