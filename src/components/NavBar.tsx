@@ -6,11 +6,12 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Show,
 } from "@chakra-ui/react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import ColorModeSwitch from "./ColorModeSwitch";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import UserProfile from "./UserProfile";
 
 interface CurrentUser {
@@ -68,7 +69,7 @@ const NavBar = ({ user }: NavBarProps) => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>Videly</Box>
+            <Link to="/">Videly</Link>
             <HStack
               as={"nav"}
               spacing={4}
@@ -76,21 +77,30 @@ const NavBar = ({ user }: NavBarProps) => {
             >
               <NavLinks to="/">Movies</NavLinks>
               <NavLinks to="/customers">Customers</NavLinks>
-              <NavLinks to="/Rentals">Customers</NavLinks>/{" "}
+              <NavLinks to="/Rentals">Rentals</NavLinks>/{" "}
               {!user && (
                 <>
                   <NavLinks to="/login">Login</NavLinks>
                   <NavLinks to="/register">Sign Up</NavLinks>
                 </>
               )}
+              <Show below="md">
+                {user && (
+                  <>
+                    <UserProfile user={user} />
+                  </>
+                )}
+              </Show>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            {user && (
-              <>
-                <UserProfile user={user} />
-              </>
-            )}
+            <Show above="md">
+              {user && (
+                <>
+                  <UserProfile user={user} />
+                </>
+              )}
+            </Show>
             <ColorModeSwitch />
           </Flex>
         </Flex>
@@ -100,13 +110,20 @@ const NavBar = ({ user }: NavBarProps) => {
             <Stack as={"nav"} spacing={4}>
               <NavLinks to="/movies">Movies</NavLinks>
               <NavLinks to="/customers">Customers</NavLinks>
-              <NavLinks to="/Rentals">Customers</NavLinks>
+              <NavLinks to="/Rentals">Rentals</NavLinks>
               {!user && (
                 <>
                   <NavLinks to="/login">Login</NavLinks>
                   <NavLinks to="/register">Sign Up</NavLinks>
                 </>
               )}
+              <Show below="md">
+                {user && (
+                  <>
+                    <UserProfile user={user} />
+                  </>
+                )}
+              </Show>
             </Stack>
           </Box>
         ) : null}
