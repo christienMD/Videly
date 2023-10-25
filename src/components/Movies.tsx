@@ -75,17 +75,15 @@ const Movies = () => {
     }
   };
 
- 
   return (
     <div className="row">
-      <div className="col-md-3">
+      <div className="col-md-3 mt-4">
         <GenreListGroup
           onSelectGenre={(genre) => {
             setSelectedGenre(genre);
             setCurrentPage(1);
           }}
         />
-        
       </div>
       <div className="col">
         {currentUser && (
