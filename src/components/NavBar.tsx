@@ -118,11 +118,13 @@ const NavBar = ({ user }: NavBarProps) => {
                 </>
               )}
               <Show below="md">
-                {user && (
-                  <>
-                    <UserProfile user={user} />
-                  </>
-                )}
+                <Box>
+                  {user && (
+                    <>
+                      <UserProfile user={user} />
+                    </>
+                  )}
+                </Box>
               </Show>
             </Stack>
           </Box>
